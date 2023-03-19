@@ -21,7 +21,8 @@ class ContactWidget extends StatelessWidget {
           SelectableText(
             'Phone - 9582606442',
             style: TextStyle(color: color, fontSize: 15),
-          ),],
+          ),
+        ],
       ),
     );
   }

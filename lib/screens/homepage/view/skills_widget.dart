@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 
 class SkillsWidget extends StatelessWidget {
   final Color color;
-  const SkillsWidget({super.key, required this.color,});
+  const SkillsWidget({
+    super.key,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       children: [
         SelectableText(
           'S K I L L S',
           style: TextStyle(color: color, fontSize: 30),
         ),
         SelectableText(''),
-        Row(mainAxisSize: MainAxisSize.min,
+        Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Column(
               children: [

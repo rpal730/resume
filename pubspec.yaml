@@ -67,6 +67,9 @@ flutter:
   assets:
     - lib/assets/rahul pal resume.pdf
     - lib/assets/video_sample.mp4
+    - lib/assets/sample2.mp4
+    - lib/assets/videoplayback.mp4
+    - lib/assets/videoplayback2.mp4
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

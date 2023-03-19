@@ -5,12 +5,30 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 class HomepageViewModel extends BaseModel {
+  VideoPlayerController videoPlayerController =
+      VideoPlayerController.asset('lib/assets/videoplayback2.mp4');
 
-  VideoPlayerController videoPlayerController = VideoPlayerController.asset('lib/assets/video_sample.mp4');
+  int count = 0;
+
+  int _offset = 0;
+  int get offset => _offset;
+  setOffset(int value) {
+    if (offset > 300 || offset < -300) {
+      count++;
+      _offset = 0;
+    }
+    if (count % 2 == 0) {
+      _offset += value;
+    } else {
+      _offset -= value;
+    }
+    print(offset);
+    notifyListeners();
+  }
 
   bool _isAsthetic = false;
   bool get isAsthetic => _isAsthetic;
-  setAsthetic(bool value){
+  setAsthetic(bool value) {
     _isAsthetic = value;
     notifyListeners();
   }
@@ -18,23 +36,25 @@ class HomepageViewModel extends BaseModel {
   initializeVideo() async {
     videoPlayerController.setLooping(true);
     print(videoPlayerController);
-            videoPlayerController.setVolume(0);
-    await videoPlayerController.initialize().then((value) => videoPlayerController.play());
+    videoPlayerController.setVolume(0);
+    await videoPlayerController
+        .initialize()
+        .then((value) => videoPlayerController.play());
     print(videoPlayerController);
     // videoPlayerController.play();
     notifyListeners();
   }
 
-  playVideo(){
+  playVideo() {
     // if(videoPlayerController.)
     videoPlayerController.play();
     notifyListeners();
   }
 
-disposeVideo(){
-  videoPlayerController.dispose();
-  notifyListeners();
-}
+  disposeVideo() {
+    videoPlayerController.dispose();
+    notifyListeners();
+  }
 
   downloadFile(String url) {
     AnchorElement anchorElement = new AnchorElement(href: url);
@@ -66,6 +86,7 @@ disposeVideo(){
     _isRoleHovering = value;
     notifyListeners();
   }
+
   //--------skills hovering
   bool _isSkillsHovering = false;
   bool get isSkillsHovering => _isSkillsHovering;
@@ -73,6 +94,7 @@ disposeVideo(){
     _isSkillsHovering = value;
     notifyListeners();
   }
+
   //--------summary hovering
   bool _isSummaryHovering = false;
   bool get isSummaryHovering => _isSummaryHovering;
@@ -80,6 +102,7 @@ disposeVideo(){
     _isSummaryHovering = value;
     notifyListeners();
   }
+
   //--------contact hovering
   bool _isContactHovering = false;
   bool get isContactHovering => _isContactHovering;
