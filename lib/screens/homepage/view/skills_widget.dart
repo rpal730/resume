@@ -33,7 +33,7 @@ class SkillsWidget extends StatelessWidget {
                   style: TextStyle(color: color, fontSize: 15),
                 ),
                 SelectableText(
-                  'Postman',
+                  'OOPs concepts',
                   style: TextStyle(color: color, fontSize: 15),
                 ),
                 SelectableText(

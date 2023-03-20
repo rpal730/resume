@@ -9,7 +9,10 @@ class CustomCursor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(text),
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.lightGreen, fontStyle: FontStyle.italic),
+      ),
     );
   }
 }

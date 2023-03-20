@@ -60,39 +60,10 @@ class _HomepageState extends State<Homepage> {
           onHover: model.updateLocation,
           child: Stack(
             children: [
-              Positioned(
-                child: CustomCursor(
-                  text: model.updateMouseCursorText(),
-                ),
-                left: model.x,
-                top: model.y,
-              ),
 
-              // GridView.builder(
-              //     itemCount: 36,
-              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //       crossAxisCount:
-              //           MediaQuery.of(context).size.width > 500 ? 6 : 3,
-              //       crossAxisSpacing: 8,
-              //       mainAxisSpacing: 8,
-              //       childAspectRatio: (2 / 1),
-              //     ),
-              //     itemBuilder: (context, index) {
-              //       return InkWell(
-              //         onTap: () {},
-              //         onHover: (value) {
-              //           model.onHoverMovingCursor(value);
-              //         },
-              //         child: AnimatedContainer(
-              //             duration: const Duration(milliseconds: 1),
-              //             color: model.isDownloadHovering
-              //                 ? Colors.black.withOpacity(0.3)
-              //                 : Colors.transparent,
-              //             child:SizedBox()),
-              //       );
-              //     }),
-
-              model.isSummaryHovering || model.isContactHovering || model.isFooterHovering
+              model.isSummaryHovering ||
+                      model.isContactHovering ||
+                      model.isFooterHovering
                   ? VideoPlayer(
                       videoPlayerController2,
                     )
@@ -102,13 +73,26 @@ class _HomepageState extends State<Homepage> {
                       videoPlayerController1,
                     )
                   : const SizedBox(),
+              Positioned(
+                child: CustomCursor(
+                  text: model.updateMouseCursorText(),
+                ),
+                left: model.x,
+                top: model.y,
+              ),
               Center(
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    const Icon(
-                      Icons.person,
-                      size: 100,
+                    Center(
+                      child: ClipOval(
+                        child: Image.asset(
+                          'lib/assets/Capture2.PNG',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     Center(
                       child: InkWell(
@@ -124,14 +108,15 @@ class _HomepageState extends State<Homepage> {
                               ? Colors.black54
                               : Colors.white.withOpacity(0),
                           child: Text(
-                            'Rahul Pal ',
+                            ' Rahul Pal ',
                             style: TextStyle(
                                 fontSize: 40,
                                 color: model.isNameHovering
                                     ? Colors.white
                                     : model.isSkillsHovering ||
                                             model.isContactHovering ||
-                                            model.isSummaryHovering || model.isFooterHovering
+                                            model.isSummaryHovering ||
+                                            model.isFooterHovering
                                         ? Colors.white
                                         : Colors.black),
                           ),
@@ -157,7 +142,8 @@ class _HomepageState extends State<Homepage> {
                                     ? Colors.white
                                     : model.isSkillsHovering ||
                                             model.isContactHovering ||
-                                            model.isSummaryHovering|| model.isFooterHovering
+                                            model.isSummaryHovering ||
+                                            model.isFooterHovering
                                         ? Colors.white
                                         : Colors.black),
                           ),
@@ -180,7 +166,8 @@ class _HomepageState extends State<Homepage> {
                                 size: 30,
                                 color: model.isSkillsHovering ||
                                         model.isContactHovering ||
-                                        model.isSummaryHovering|| model.isFooterHovering
+                                        model.isSummaryHovering ||
+                                        model.isFooterHovering
                                     ? Colors.white
                                     : Colors.black)),
                       ),
@@ -291,8 +278,11 @@ class _HomepageState extends State<Homepage> {
                             color: model.isFooterHovering
                                 ? Colors.black.withOpacity(00.4)
                                 : Colors.transparent,
-                            child: FooterWidget(color: model.isFooterHovering? Colors.white
-                                    : Colors.transparent,)),
+                            child: FooterWidget(
+                              color: model.isFooterHovering
+                                  ? Colors.white
+                                  : Colors.transparent,
+                            )),
                       ),
                     ),
                   ],

@@ -7,7 +7,8 @@ class FooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-        '# #     T H E S E   V I O L E N T   D E L I G H T S   H A V E   V I O L E N T   E N D S     # #',
-          style: TextStyle(color: color, fontSize: 20),);
+      '# #     T H E S E   V I O L E N T   D E L I G H T S   H A V E   V I O L E N T   E N D S     # #',
+      style: TextStyle(color: color, fontSize: 20),
+    );
   }
 }

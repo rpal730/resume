@@ -140,7 +140,7 @@ class HomepageViewModel extends BaseModel {
   String mousecursortext = 'Glad you made it here!';
   updateMouseCursorText() {
     if (y > 100 && y < 200) {
-      return mousecursortext = 'This is where my photo is supposed to be.';
+      return mousecursortext = 'This is how I look.';
     }
     if (y > 200 && y < 250) {
       return mousecursortext = 'This is my name ofcourse';
@@ -151,14 +151,21 @@ class HomepageViewModel extends BaseModel {
     if (y > 285 && y < 320) {
       return mousecursortext = 'This is where you can get my resume!';
     }
-    if (y > 380 && y < 700) {
+    if ((x > 380 && x < 680) && (y > 370 && y < 760)) {
+      return mousecursortext = 'This shows summary of my profile.';
+    }
+    if ((x > 712 && x < 1210) && (y > 370 && y < 760)) {
       return mousecursortext =
-          'This region contains my other details. only if you could hover that mouse around';
+          'This shows my fundamental skills that I am proficient in.';
+    }
+    if ((x > 1240 && x < 1540) && (y > 370 && y < 760)) {
+      return mousecursortext = 'This is how you can contact me directly.';
     }
     if (y > 800 && y < 950) {
       return mousecursortext = 'This means you are at footer region now!';
     } else {
-      return mousecursortext = 'Glad you made it here! I hope you are in full screen mode(press F11)!';
+      return mousecursortext =
+          'Glad you made it here! I hope you are in full screen mode(press F11)!';
     }
 
     notifyListeners();
