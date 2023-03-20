@@ -11,6 +11,9 @@ class SkillsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox.square(
+          dimension: 20,
+        ),
         SelectableText(
           'S K I L L S',
           style: TextStyle(color: color, fontSize: 30),

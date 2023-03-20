@@ -8,6 +8,9 @@ class SummaryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox.square(
+          dimension: 20,
+        ),
         SelectableText(
           'S U M M A R Y',
           style: TextStyle(color: color, fontSize: 30),

@@ -9,6 +9,9 @@ class ContactWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
+          SizedBox.square(
+            dimension: 20,
+          ),
           SelectableText(
             'C O N T A C T',
             style: TextStyle(color: color, fontSize: 30),

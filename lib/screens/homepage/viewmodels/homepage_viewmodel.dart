@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'package:flutter/gestures.dart';
 import 'package:resume/config/core/base_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -63,6 +64,13 @@ class HomepageViewModel extends BaseModel {
     // notifyListeners();
   }
 
+  bool _isCursorMoving = false;
+  bool get isCursorMoving => _isCursorMoving;
+  onHoverMovingCursor(bool value) {
+    _isCursorMoving = value;
+    notifyListeners();
+  }
+
   bool _isDownloadHovering = false;
   bool get isDownloadHovering => _isDownloadHovering;
 
@@ -108,6 +116,51 @@ class HomepageViewModel extends BaseModel {
   bool get isContactHovering => _isContactHovering;
   onHoverContact(bool value) {
     _isContactHovering = value;
+    notifyListeners();
+  }
+
+  //---------mouse information
+  double x = 0.0;
+  double y = 0.0;
+  void updateLocation(PointerHoverEvent details) {
+    x = details.position.dx.toDouble();
+    y = details.position.dy.toDouble();
+    print('{$x , $y}');
+    notifyListeners();
+  }
+
+  //--------footer quote hovering
+  bool _isFooterHovering = false;
+  bool get isFooterHovering => _isFooterHovering;
+  onHoverFooter(bool value) {
+    _isFooterHovering = value;
+    notifyListeners();
+  }
+
+  String mousecursortext = 'Glad you made it here!';
+  updateMouseCursorText() {
+    if (y > 100 && y < 200) {
+      return mousecursortext = 'This is where my photo is supposed to be.';
+    }
+    if (y > 200 && y < 250) {
+      return mousecursortext = 'This is my name ofcourse';
+    }
+    if (y > 250 && y < 280) {
+      return mousecursortext = 'This is my role.';
+    }
+    if (y > 285 && y < 320) {
+      return mousecursortext = 'This is where you can get my resume!';
+    }
+    if (y > 380 && y < 700) {
+      return mousecursortext =
+          'This region contains my other details. only if you could hover that mouse around';
+    }
+    if (y > 800 && y < 950) {
+      return mousecursortext = 'This means you are at footer region now!';
+    } else {
+      return mousecursortext = 'Glad you made it here! I hope you are in full screen mode(press F11)!';
+    }
+
     notifyListeners();
   }
 
