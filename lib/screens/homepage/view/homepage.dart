@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:resume/config/core/base_viewmodel.dart';
+import 'package:resume/config/core/enums/state_enums.dart';
 import 'package:resume/screens/homepage/view/contact_widget.dart';
 import 'package:resume/screens/homepage/view/custom_cursor.dart';
 import 'package:resume/screens/homepage/view/footer_widget.dart';
@@ -49,10 +50,13 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return BaseView<HomepageViewModel>(builder: (_, model, __) {
+      bool isVideoTriggered = model.state == ViewState.summaryHovered ||
+          model.state == ViewState.contactHovered ||
+          model.state == ViewState.skillsHovered ||
+          model.state == ViewState.footerHovered;
+
       return Scaffold(
-        backgroundColor: model.isSkillsHovering ||
-                model.isContactHovering ||
-                model.isSummaryHovering
+        backgroundColor: isVideoTriggered
             ? Colors.black
             : Colors.white,
         body: MouseRegion(
@@ -60,7 +64,6 @@ class _HomepageState extends State<Homepage> {
           onHover: model.updateLocation,
           child: Stack(
             children: [
-
               model.isSummaryHovering ||
                       model.isContactHovering ||
                       model.isFooterHovering
@@ -84,13 +87,21 @@ class _HomepageState extends State<Homepage> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    Center(
-                      child: ClipOval(
-                        child: Image.asset(
-                          'lib/assets/Capture2.PNG',
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
+                    InkWell(
+                      onTap: () {
+                        print('sadadadasda');
+                      },
+                      onHover: (value) {
+                        model.onHover(value, ViewState.dpHovered);
+                      },
+                      child: Center(
+                        child: ClipOval(
+                          child: Image.asset(
+                            'lib/assets/Capture2.PNG',
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -101,6 +112,7 @@ class _HomepageState extends State<Homepage> {
                         },
                         onHover: (value) {
                           model.onHoverName(value);
+                          model.onHover(value, ViewState.nameHovered);
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 400),
@@ -128,6 +140,7 @@ class _HomepageState extends State<Homepage> {
                         onTap: () {},
                         onHover: (value) {
                           model.onHoverRole(value);
+                          model.onHover(value, ViewState.roleHovered);
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 400),
@@ -156,6 +169,7 @@ class _HomepageState extends State<Homepage> {
                         // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                         onHover: (value) {
                           model.onHoverDownload(value);
+                          model.onHover(value, ViewState.resumeHovered);
                         },
                         child: AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
@@ -184,6 +198,8 @@ class _HomepageState extends State<Homepage> {
                                 // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                                 onHover: (value) {
                                   model.onHoverSummary(value);
+                                  model.onHover(
+                                      value, ViewState.summaryHovered);
                                   videoPlayerController2.play();
                                   videoPlayerController1.pause();
                                 },
@@ -210,6 +226,8 @@ class _HomepageState extends State<Homepage> {
                                   onTap: () {},
                                   // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                                   onHover: (value) {
+                                    model.onHover(
+                                        value, ViewState.skillsHovered);
                                     model.setAsthetic(value);
                                     model.onHoverSkills(value);
                                     videoPlayerController1.play();
@@ -237,6 +255,8 @@ class _HomepageState extends State<Homepage> {
                                   onTap: () {},
                                   // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                                   onHover: (value) {
+                                    model.onHover(
+                                        value, ViewState.contactHovered);
                                     model.onHoverContact(value);
                                     videoPlayerController2.play();
                                     videoPlayerController1.pause();
@@ -270,6 +290,7 @@ class _HomepageState extends State<Homepage> {
                         // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                         onHover: (value) {
                           model.onHoverFooter(value);
+                          model.onHover(value, ViewState.footerHovered);
                           videoPlayerController2.play();
                           videoPlayerController1.pause();
                         },

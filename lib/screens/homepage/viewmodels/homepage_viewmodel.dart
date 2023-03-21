@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/gestures.dart';
 import 'package:resume/config/core/base_model.dart';
+import 'package:resume/config/core/enums/state_enums.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
@@ -125,7 +126,7 @@ class HomepageViewModel extends BaseModel {
   void updateLocation(PointerHoverEvent details) {
     x = details.position.dx.toDouble();
     y = details.position.dy.toDouble();
-    print('{$x , $y}');
+    // print('{$x , $y}');
     notifyListeners();
   }
 
@@ -139,37 +140,50 @@ class HomepageViewModel extends BaseModel {
 
   String mousecursortext = 'Glad you made it here!';
   updateMouseCursorText() {
-    if (y > 100 && y < 200) {
-      return mousecursortext = 'This is how I look.';
+    if (state == ViewState.dpHovered) {
+      return mousecursortext =
+          'This is exactly how I look, when I am on vacation and in perfect light.';
     }
-    if (y > 200 && y < 250) {
+
+    // if (y > 100 && y < 200) {
+    //   return mousecursortext = 'This is how I look.';
+    // }
+    if (state == ViewState.nameHovered) {
       return mousecursortext = 'This is my name ofcourse';
     }
-    if (y > 250 && y < 280) {
+    if (state == ViewState.roleHovered) {
       return mousecursortext = 'This is my role.';
     }
-    if (y > 285 && y < 320) {
+    if (state == ViewState.resumeHovered) {
       return mousecursortext = 'This is where you can get my resume!';
     }
-    if ((x > 380 && x < 680) && (y > 370 && y < 760)) {
+    if ((state == ViewState.summaryHovered)) {
       return mousecursortext = 'This shows summary of my profile.';
     }
-    if ((x > 712 && x < 1210) && (y > 370 && y < 760)) {
+    if (state == ViewState.skillsHovered) {
       return mousecursortext =
           'This shows my fundamental skills that I am proficient in.';
     }
-    if ((x > 1240 && x < 1540) && (y > 370 && y < 760)) {
+    if (state == ViewState.contactHovered) {
       return mousecursortext = 'This is how you can contact me directly.';
     }
-    if (y > 800 && y < 950) {
-      
+    if (state == ViewState.footerHovered) {
       return mousecursortext = 'This means you are at footer region now!';
-    } else {
+    }
+    if (state == ViewState.idle) {
       return mousecursortext =
-          'Glad you made it here! I hope you are in full screen mode(press F11)!';
+          'Move your mouse around and discover elements yourself!';
     }
 
     notifyListeners();
+  }
+
+  onHover(bool value, ViewState newState) {
+    if (value) {
+      state = newState;
+    } else {
+      state = ViewState.idle;
+    }
   }
 
   launch() async {
