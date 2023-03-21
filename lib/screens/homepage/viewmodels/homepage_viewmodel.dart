@@ -162,6 +162,7 @@ class HomepageViewModel extends BaseModel {
       return mousecursortext = 'This is how you can contact me directly.';
     }
     if (y > 800 && y < 950) {
+      
       return mousecursortext = 'This means you are at footer region now!';
     } else {
       return mousecursortext =
