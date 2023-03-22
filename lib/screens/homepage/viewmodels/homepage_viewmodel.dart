@@ -166,7 +166,7 @@ custom map(like uber or ola). Well for more you can always contact me, or just c
     }
     if (state == ViewState.skillsHovered) {
       return mousecursortext =
-'''I have good command on all these skills and have acquired by constant effort and implementation.
+          '''I have good command on all these skills and have acquired by constant effort and implementation.
 
 Why I will be a good addition to your organization?
 Only if you like efficient, transparent, a person who knows his capabilities, and have a burning desire to learn more and more.''';
