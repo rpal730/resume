@@ -20,62 +20,78 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
-  VideoPlayerController videoPlayerController1 =
-      VideoPlayerController.asset('lib/assets/sample2.mp4');
-  VideoPlayerController videoPlayerController2 =
-      VideoPlayerController.asset('lib/assets/videoplayback.mp4');
+List<String> videoAssetStrings = [
+  'lib/assets/name.mp4',
+  'lib/assets/role.mp4',
+  'lib/assets/skills.mp4',
+  'lib/assets/summary.mp4',
+  'lib/assets/contact.mp4',
+  'lib/assets/dp.mp4',
+];
 
-  initializeVideo() async {
-    videoPlayerController1.setLooping(true);
-    videoPlayerController2.setLooping(true);
-    print(videoPlayerController1);
-    videoPlayerController1.setVolume(0);
-    videoPlayerController2.setVolume(0);
-    await videoPlayerController1.initialize();
-    await videoPlayerController2.initialize();
-    // videoPlayerController.play();
-    print(videoPlayerController1);
-    setState(() {});
-    // videoPlayerController.play();
+List<VideoPlayerController> videoControllers = [];
+
+class _HomepageState extends State<Homepage> {
+  initializeAllVideos() async {
+    for (int i = 0; i < videoControllers.length; i++) {
+      videoControllers[i].setLooping(true);
+      videoControllers[i].setVolume(0);
+      await videoControllers[i].initialize();
+    }
+    print(videoControllers.length);
   }
 
   @override
   void initState() {
-    initializeVideo();
-    // TODO: implement initState
+    for (int i = 0; i < videoAssetStrings.length; i++) {
+      videoControllers.add(VideoPlayerController.asset(videoAssetStrings[i]));
+    }
+
+    initializeAllVideos();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseView<HomepageViewModel>(builder: (_, model, __) {
+      playOnHoveringEverythingElsePause(VideoPlayerController controller) {
+        for (int i = 0; i < videoControllers.length; i++) {
+          videoControllers[i].pause();
+        }
+        controller.play();
+      }
+
       bool isVideoTriggered = model.state == ViewState.summaryHovered ||
           model.state == ViewState.contactHovered ||
           model.state == ViewState.skillsHovered ||
           model.state == ViewState.footerHovered;
 
       return Scaffold(
-        backgroundColor: isVideoTriggered
-            ? Colors.black
-            : Colors.white,
+        backgroundColor: isVideoTriggered ? Colors.black : Colors.white,
         body: MouseRegion(
           cursor: SystemMouseCursors.none,
           onHover: model.updateLocation,
           child: Stack(
             children: [
-              model.isSummaryHovering ||
-                      model.isContactHovering ||
-                      model.isFooterHovering
-                  ? VideoPlayer(
-                      videoPlayerController2,
-                    )
-                  : const SizedBox(),
-              model.isAsthetic
-                  ? VideoPlayer(
-                      videoPlayerController1,
-                    )
-                  : const SizedBox(),
+              model.state == ViewState.nameHovered
+                  ? VideoPlayer(videoControllers[0])
+                  : Container(),
+              model.state == ViewState.roleHovered
+                  ? VideoPlayer(videoControllers[1])
+                  : Container(),
+              model.state == ViewState.skillsHovered
+                  ? VideoPlayer(videoControllers[2])
+                  : Container(),
+              model.state == ViewState.summaryHovered
+                  ? VideoPlayer(videoControllers[3])
+                  : Container(),
+              model.state == ViewState.contactHovered
+                  ? VideoPlayer(videoControllers[4])
+                  : Container(),
+              model.state == ViewState.dpHovered
+                  ? VideoPlayer(videoControllers[5])
+                  : Container(),
               Positioned(
                 child: CustomCursor(
                   text: model.updateMouseCursorText(),
@@ -87,14 +103,16 @@ class _HomepageState extends State<Homepage> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        print('sadadadasda');
-                      },
-                      onHover: (value) {
-                        model.onHover(value, ViewState.dpHovered);
-                      },
-                      child: Center(
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          print('sadadadasda');
+                        },
+                        onHover: (value) {
+                          model.onHover(value, ViewState.dpHovered);
+                          playOnHoveringEverythingElsePause(
+                              videoControllers[5]);
+                        },
                         child: ClipOval(
                           child: Image.asset(
                             'lib/assets/Capture2.PNG',
@@ -113,6 +131,8 @@ class _HomepageState extends State<Homepage> {
                         onHover: (value) {
                           model.onHoverName(value);
                           model.onHover(value, ViewState.nameHovered);
+                          playOnHoveringEverythingElsePause(
+                              videoControllers[0]);
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 400),
@@ -128,7 +148,8 @@ class _HomepageState extends State<Homepage> {
                                     : model.isSkillsHovering ||
                                             model.isContactHovering ||
                                             model.isSummaryHovering ||
-                                            model.isFooterHovering
+                                            model.isFooterHovering ||
+                                            model.state == ViewState.dpHovered
                                         ? Colors.white
                                         : Colors.black),
                           ),
@@ -141,6 +162,8 @@ class _HomepageState extends State<Homepage> {
                         onHover: (value) {
                           model.onHoverRole(value);
                           model.onHover(value, ViewState.roleHovered);
+                          playOnHoveringEverythingElsePause(
+                              videoControllers[1]);
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 400),
@@ -156,7 +179,8 @@ class _HomepageState extends State<Homepage> {
                                     : model.isSkillsHovering ||
                                             model.isContactHovering ||
                                             model.isSummaryHovering ||
-                                            model.isFooterHovering
+                                            model.isFooterHovering ||
+                                            model.state == ViewState.dpHovered
                                         ? Colors.white
                                         : Colors.black),
                           ),
@@ -166,7 +190,6 @@ class _HomepageState extends State<Homepage> {
                     Center(
                       child: InkWell(
                         onTap: () => model.launch(),
-                        // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                         onHover: (value) {
                           model.onHoverDownload(value);
                           model.onHover(value, ViewState.resumeHovered);
@@ -181,7 +204,8 @@ class _HomepageState extends State<Homepage> {
                                 color: model.isSkillsHovering ||
                                         model.isContactHovering ||
                                         model.isSummaryHovering ||
-                                        model.isFooterHovering
+                                        model.isFooterHovering ||
+                                        model.state == ViewState.dpHovered
                                     ? Colors.white
                                     : Colors.black)),
                       ),
@@ -195,13 +219,12 @@ class _HomepageState extends State<Homepage> {
                             children: [
                               InkWell(
                                 onTap: () {},
-                                // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                                 onHover: (value) {
                                   model.onHoverSummary(value);
                                   model.onHover(
                                       value, ViewState.summaryHovered);
-                                  videoPlayerController2.play();
-                                  videoPlayerController1.pause();
+                                  playOnHoveringEverythingElsePause(
+                                      videoControllers[3]);
                                 },
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -209,7 +232,6 @@ class _HomepageState extends State<Homepage> {
                                       ? Colors.black.withOpacity(0.3)
                                       : Colors.transparent,
                                   child: SizedBox(
-                                    // width: MediaQuery.of(context).size.width / 4,
                                     width: 300,
                                     height: 400,
                                     child: SummaryWidget(
@@ -224,14 +246,13 @@ class _HomepageState extends State<Homepage> {
                               ),
                               InkWell(
                                   onTap: () {},
-                                  // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                                   onHover: (value) {
                                     model.onHover(
                                         value, ViewState.skillsHovered);
                                     model.setAsthetic(value);
                                     model.onHoverSkills(value);
-                                    videoPlayerController1.play();
-                                    videoPlayerController2.pause();
+                                    playOnHoveringEverythingElsePause(
+                                        videoControllers[2]);
                                   },
                                   child: AnimatedContainer(
                                     duration: const Duration(milliseconds: 300),
@@ -239,8 +260,8 @@ class _HomepageState extends State<Homepage> {
                                         ? Colors.black.withOpacity(0.3)
                                         : Colors.transparent,
                                     child: SizedBox(
-                                      // width: MediaQuery.of(context).size.width / 3,
-                                      width: 500, height: 400,
+                                      width: 500,
+                                      height: 400,
                                       child: SkillsWidget(
                                         color: model.isSkillsHovering
                                             ? Colors.white
@@ -253,13 +274,12 @@ class _HomepageState extends State<Homepage> {
                               ),
                               InkWell(
                                   onTap: () {},
-                                  // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                                   onHover: (value) {
                                     model.onHover(
                                         value, ViewState.contactHovered);
                                     model.onHoverContact(value);
-                                    videoPlayerController2.play();
-                                    videoPlayerController1.pause();
+                                    playOnHoveringEverythingElsePause(
+                                        videoControllers[4]);
                                   },
                                   child: AnimatedContainer(
                                       duration:
@@ -268,8 +288,6 @@ class _HomepageState extends State<Homepage> {
                                           ? Colors.black.withOpacity(0.3)
                                           : Colors.transparent,
                                       child: SizedBox(
-                                          // width: MediaQuery.of(context).size.width / 4,
-
                                           width: 300,
                                           height: 400,
                                           child: ContactWidget(
@@ -287,12 +305,9 @@ class _HomepageState extends State<Homepage> {
                     Center(
                       child: InkWell(
                         onTap: () {},
-                        // model.downloadFile('lib/assets/rahul pal resume.pdf'),
                         onHover: (value) {
                           model.onHoverFooter(value);
                           model.onHover(value, ViewState.footerHovered);
-                          videoPlayerController2.play();
-                          videoPlayerController1.pause();
                         },
                         child: AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
@@ -322,83 +337,6 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                 ),
-              // Positioned(
-              //   // right: Random().nextDouble()*300,
-              //   left: (MediaQuery.of(context).size.width * 0.45),
-              //   // right: (MediaQuery.of(context).size.width* 0.5) + model.offset,
-              //   top: (MediaQuery.of(context).size.height * 0.35),
-
-              //   // top: (MediaQuery.of(context).size.height * 0.35) - model.offset,
-              //   child: InkWell(
-              //     onTap: () => model.launch(),
-              //     // model.downloadFile('lib/assets/rahul pal resume.pdf'),
-              //     onHover: (value) {
-              //       model.onHoverDownload(value);
-              //       // model.setOffset(Random().nextInt(50));
-              //     },
-              //     child: AnimatedContainer(
-              //         duration: const Duration(milliseconds: 300),
-              //         color: model.isDownloadHovering
-              //             ? Colors.black.withOpacity(0.3)
-              //             : Colors.transparent,
-              //         child: Icon(Icons.document_scanner_sharp,
-              //             size: 30,
-              //             color: model.isAsthetic ? Colors.white : Colors.black)),
-              //   ),
-              // ),
-              // if (model.count > 2)
-              //   Positioned(
-              //     bottom: 500,
-              //     left: MediaQuery.of(context).size.width / 2,
-              //     child: const Center(
-              //       child: InkWell(
-              //         child: Text(
-              //           'Wow you are really persistent! BRAVO... just click on my name please.',
-              //           style: TextStyle(color: Colors.red),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // if (model.count > 4)
-              //   Positioned(
-              //     top: 100,
-              //     left: MediaQuery.of(context).size.width / 4,
-              //     child: const Center(
-              //       child: InkWell(
-              //         child: Text(
-              //           'LET ME HELP YOU!!!!!',
-              //           style: TextStyle(color: Colors.red, fontSize: 50),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // GridView.builder(
-              //     itemCount: 1000,
-              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //       crossAxisCount:
-              //           MediaQuery.of(context).size.width > 500 ? 50 : 3,
-              //       crossAxisSpacing: 8,
-              //       mainAxisSpacing: 8,
-              //       childAspectRatio: (2 / 1),
-              //     ),
-              //     itemBuilder: (context, index) {
-              //       return InkWell(
-              //         onTap: () {},
-              //         onHover: (value) {
-              //           model.onHoverDownload(value);
-              //         },
-              //         child: AnimatedContainer(
-              //             duration: const Duration(milliseconds: 300),
-              //             color: model.isDownloadHovering
-              //                 ? Colors.black.withOpacity(0.3)
-              //                 : Colors.transparent,
-              //             child: Icon(Icons.download_sharp,
-              //                 size: 30,
-              //                 color: model.isAsthetic
-              //                     ? Colors.white
-              //                     : Colors.black)),
-              //       );
-              //     })
             ],
           ),
         ),

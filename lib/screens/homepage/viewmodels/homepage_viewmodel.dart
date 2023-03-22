@@ -152,17 +152,24 @@ class HomepageViewModel extends BaseModel {
       return mousecursortext = 'This is my name ofcourse';
     }
     if (state == ViewState.roleHovered) {
-      return mousecursortext = 'This is my role.';
+      return mousecursortext = 'This is my role having experience of 3 years.';
     }
     if (state == ViewState.resumeHovered) {
       return mousecursortext = 'This is where you can get my resume!';
     }
     if ((state == ViewState.summaryHovered)) {
-      return mousecursortext = 'This shows summary of my profile.';
+      return mousecursortext = '''
+I have worked on variety of projects whether they are for mobile or web, due to which I have worked with various 
+packages too, because they are very well documented already which shows my quick learning ability. I have worked 
+on MVVM and MVC architecture. I have also worked with googleMaps and yes, I had to implement custom marker and 
+custom map(like uber or ola). Well for more you can always contact me, or just checkout my resume!''';
     }
     if (state == ViewState.skillsHovered) {
       return mousecursortext =
-          'This shows my fundamental skills that I am proficient in.';
+'''I have good command on all these skills and have acquired by constant effort and implementation.
+
+Why I will be a good addition to your organization?
+Only if you like efficient, transparent, a person who knows his capabilities, and have a burning desire to learn more and more.''';
     }
     if (state == ViewState.contactHovered) {
       return mousecursortext = 'This is how you can contact me directly.';
